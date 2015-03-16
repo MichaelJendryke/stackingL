@@ -447,7 +447,7 @@ int main(int argc, char *argv[]) {
 
                 }
             }
-        } else if (strcmp(sensor, "ERS1E1") == 0 || strcmp(sensor, "ERS2E2") == 0 || strcmp(sensor, "ASARIMS") == 0) {
+        } else if (strcmp(sensor, "ERS1E1") == 0 || strcmp(sensor, "ERS2E2") == 0) {
             while (std::getline(imagestack, imagefile)) {
                 if (imagefile.length() >= 62) {
                     imagefile.erase(62, 1); // only for ERS1CEOS and ERS2CEOS
@@ -459,7 +459,36 @@ int main(int argc, char *argv[]) {
                     check = str + imagefile;
                     const char * c = check.c_str();
                     if (stat(c, &st) == 0) {
-                        cout << "Image NO: " << i + 1 << "\t" << check << " OK" << endl;
+                        
+                        cout << "Image NO: " << i + 1 << "\t" << check << " OK"  << endl;
+                        i++;
+                    } else {
+                        cout << "ERROR: Line " << i + 1 << "\t" << check << " FAIL" << endl;
+                    }
+                } else if (strcmp(sensor, "ASARWSS") == 0) {
+
+                } else if (imagefile.length() < 14) {
+                    cout << "ERROR bad filename found" << endl;
+                    exit(1);
+
+                }
+            }
+        }else if (strcmp(sensor, "ASARIMS") == 0) {
+            while (std::getline(imagestack, imagefile)) {
+                if (imagefile.length() >= 62) {
+                    imagefile.erase(62, 1); // only for ERS1CEOS and ERS2CEOS
+                    imagestackfiles[i] = imagefile;
+                    //check if folder exists
+                    struct stat st;
+                    string check;
+                    std::string str(sourcedir);
+                    check = str + imagefile;
+                    const char * c = check.c_str();
+                    if (stat(c, &st) == 0) {
+                        string date = imagestackfiles[i];
+                        date.erase(date.begin(), date.begin() + 14);
+                        date.erase(date.begin() + 8, date.end());
+                        cout << "Image NO: " << i + 1 << "\t" << check << " OK" << date << endl;
                         i++;
                     } else {
                         cout << "ERROR: Line " << i + 1 << "\t" << check << " FAIL" << endl;
