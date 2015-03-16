@@ -574,13 +574,18 @@ int main(int argc, char *argv[]) {
         cin >> meter;
         combinations = numberofimages * 0.5 * (numberofimages - 1);
         for (int i = 0; i <= numberofimages - 1; i++) {
+            int cutoff = 28;
+            if (strcmp(sensor, "ASARIMS") == 0) {
+            cutoff=14;
+            }
+            
             string master = imagestackfiles[i];
-            master.erase(master.begin(), master.begin() + 28);
+            master.erase(master.begin(), master.begin() + cutoff);
             master.erase(master.begin() + 8, master.end());
 
             for (int j = i + 1; j <= numberofimages - 1; j++) {
                 string slave = imagestackfiles[j];
-                slave.erase(slave.begin(), slave.begin() + 28);
+                slave.erase(slave.begin(), slave.begin() + cutoff);
                 slave.erase(slave.begin() + 8, slave.end());
                 cout << combinationscount << " of " << combinations << " Combinations. This is: " << master << "_" << slave << endl;
                 combinationscount++;
