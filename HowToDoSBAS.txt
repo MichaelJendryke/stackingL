@@ -1,0 +1,89 @@
+./VBOX.sh 
+ cd LINUX/ShanghaiTSX_Full-Scene/
+
+ls /home/michael/SOURCE/14_Shanghai_TSX1/ > imagestack.txt
+gedit imagestack.txt (Set your master in the first line)
+stackingL 0 3 /home/michael/SOURCE/14_Shanghai_TSX1/ TSX FINDSBAS
+cd FINDSBAS/
+get_metadata.sh > metadata.csv
+matlab > makecombinations.m
+..
+stackingL 0 3 /home/michael/SOURCE/14_Shanghai_TSX1/ TSX SM 501 28500 501 15000
+stackingL 4 11 /home/michael/SOURCE/14_Shanghai_TSX1/ TSX SM 501 28500 501 15000
+
+stackingL 0 3 /home/michael/SOURCE/14_Shanghai_TSX1/ TSX SM 501 27000 251 5000
+stackingL 4 11 /home/michael/SOURCE/14_Shanghai_TSX1/ TSX SM 501 27000 251 5000
+
+ls
+cd SM
+ls
+..
+cp FINDSBAS/combinations.csv SM/combinations.csv
+cd SM
+sbasCoherence.sh
+
+ In the first flder of SM
+ doris Inputfiles/m_simamp 
+ 1858  doris Inputfiles/m_timing 
+ 1859  step_dem_modified
+ 1860  step_geo_modified
+
+
+ 
+ 
+ 
+
+
+
+
+doris Inputfile/m_timing
+doris Inputfile/??
+step_geocode_modified
+step_dem
+
+
+
+<VRTDataset rasterXSize="14500" rasterYSize="28000">
+  <VRTRasterBand dataType="Float32" band="1" subClass="VRTRawRasterBand">
+    <SourceFilename relativetoVRT="1">master_slave.coh</SourceFilename>
+    <ImageOffset>0</ImageOffset>
+    <PixelOffset>4</PixelOffset>
+    <LineOffset>58000</LineOffset>
+    <ByteOrder>LSB</ByteOrder>
+  </VRTRasterBand>
+</VRTDataset>
+
+gdal_translate -of GTiff master_slave.vrt tt.tif
+
+To Resample the image
+gdalwarp -t_srs "+proj=utm +zone=51 +datum=WGS84" -r average -tr 400 400 -srcnodata 0 -dstnodata 0 GeoTIFF_20090328_20090408.tif GeoTIFF_20090328_20090408_UTM_400m_avg.tif
+gdalwarp -t_srs "+proj=utm +zone=51 +datum=WGS84" -r average -tr 400 400 -srcnodata 0 -dstnodata 0 GeoTIFF_20120811_20120902.tif GeoTIFF_20120811_20120902_UTM_400m_avg.tif
+gdalwarp -t_srs "+proj=utm +zone=51 +datum=WGS84" -r average -tr 100 100 -srcnodata 0 -dstnodata 0 GeoTIFF_20120811_20120902.tif GeoTIFF_20120811_20120902_UTM_100m_avg.tif
+
+
+
+
+To calculate C
+gdal_calc.py 
+-A GeoTIFF_20080421_20080820_UTM_400m_avg.tif 
+-B GeoTIFF_20090328_20090408_UTM_400m_avg.tif 
+--outfile=GeoTIFF_20080421_20080820_UTM_400m_avgANDGeoTIFF_20090328_20090408_UTM_400m_avg.tif 
+--calc="(A+B)/2" 
+--NoDataValue=0
+
+gdal_calc.py  
+-A GeoTIFF_20120811_20120902_UTM_2000m_avg.tif 
+-B GeoTIFF_20120720_20121005_UTM_2000m_avg.tif 
+-C GeoTIFF_20120628_20120811_UTM_2000m_avg.tif 
+-D GeoTIFF_20120401_20120515_UTM_2000m_avg.tif 
+--outfile=GeoTIFF_mean_UTM_2000m_avg.tif 
+--calc="(A + B + C + D ) / 4" 
+--NoDataValue=0
+
+
+
+ogr2ogr -f "ESRI Shapefile" Shanghai_Locals_2014-01to06_extended_evil.shp Shanghai_Locals_2014-01to06_extended.csv
+
+
+
+
