@@ -148,6 +148,7 @@ void makepair(int first, int last, string m, string s, string is[], char* sd, ch
             i++;
         }
     } else if (strcmp(satsensor, "ERS1E1") == 0 || strcmp(satsensor, "ERS2E2") == 0 || strcmp(satsensor, "ASARIMS") == 0) {
+        cout << "HERE!!";
         while (is[i].size() != 0) {
             if (is[i].compare(14, 7, m, 0, 7) == 0) {
                 cout << "Master: " << is[i] << " " << m << endl;
