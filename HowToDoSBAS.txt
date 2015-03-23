@@ -14,19 +14,15 @@ stackingL 4 11 /home/michael/SOURCE/14_Shanghai_TSX1/ TSX SM 501 28500 501 15000
 stackingL 0 3 /home/michael/SOURCE/14_Shanghai_TSX1/ TSX SM 501 27000 251 5000
 stackingL 4 11 /home/michael/SOURCE/14_Shanghai_TSX1/ TSX SM 501 27000 251 5000
 
-ls
-cd SM
-ls
-..
 cp FINDSBAS/combinations.csv SM/combinations.csv
 cd SM
 sbasCoherence.sh
 
- In the first flder of SM
- doris Inputfiles/m_simamp 
- 1858  doris Inputfiles/m_timing 
- 1859  step_dem_modified
- 1860  step_geo_modified
+In the first folder of SM
+doris Inputfiles/m_simamp 
+doris Inputfiles/m_timing 
+step_dem_modified
+step_geo_modified
 
 
  

@@ -697,7 +697,7 @@ int inputfiles(string m, string s, char* sensor, int r0, int rl, int c0, int cl)
         file14 << "c INT_OUT_INT                 Outdata/master_slave.int      // optional real int." << endl;
         if (strcmp(sensor, "TSX") == 0  || strcmp(sensor, "TSX_SP") == 0) {
             file14 << "INT_MULTILOOK                 1 1                           // line, pixel factors" << endl;
-        } else if (strcmp(sensor, "ERS1CEOS") == 0 || strcmp(sensor, "ERS2CEOS") == 0) {
+        } else if (strcmp(sensor, "ERS1CEOS") == 0 || strcmp(sensor, "ERS2CEOS") == 0 || strcmp(sensor, "ASARIMS") == 0) {
             file14 << "INT_MULTILOOK                 5 1                           // line, pixel factors" << endl;
         }
         file14 << "c                                                           // " << endl;
@@ -785,11 +785,16 @@ int inputfiles(string m, string s, char* sensor, int r0, int rl, int c0, int cl)
         file17 << "COH_OUT_COH                   Outdata/master_slave.coh      // optional real" << endl;
         if (strcmp(sensor, "TSX") == 0) {
             file17 << "COH_MULTILOOK                 1 1                           // same as interferogram" << endl;
-        } else if (strcmp(sensor, "ERS1CEOS") == 0 || strcmp(sensor, "ERS2CEOS") == 0) {
+        } else if (strcmp(sensor, "ERS1CEOS") == 0 || strcmp(sensor, "ERS2CEOS") == 0 || strcmp(sensor, "ASARIMS") == 0) {
             file17 << "COH_MULTILOOK                 5 1                           // same as interferogram" << endl;
 
         }
-        file17 << "COH_WINSIZE                   4 4                           // estimator window size" << endl;
+        if (strcmp(sensor, "TSX") == 0) {
+            file17 << "COH_WINSIZE                   4 4                          // estimator window size" << endl;
+        } else if (strcmp(sensor, "ERS1CEOS") == 0 || strcmp(sensor, "ERS2CEOS") == 0 || strcmp(sensor, "ASARIMS") == 0) {
+            file17 << "COH_WINSIZE                   10 2                          // estimator window size" << endl;
+
+        }
         file17 << "c                                                           // " << endl;
         file17 << "c                                                           // " << endl;
         file17 << "STOP                                                        // mandatory" << endl;
